@@ -9,8 +9,7 @@ use App\Http\Controllers\LoanTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\LoanApplicationsController;
 use App\Http\Controllers\DashboardController;
-
-
+use App\Models\Bank;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +23,8 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $banks = \App\Models\Bank::all();
+    return view('welcome', compact('banks'));
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -17,46 +17,49 @@
                     </x-nav-link>
                 </div>
 
+                <!-- Dropdown Menus -->
                 <x-nav-dropdown title="Menu" align="right" width="48">
-                        @can('view-any', App\Models\LoanApplications::class)
+                    @can('view-any', App\Models\LoanApplications::class)
                         <x-dropdown-link href="{{ route('all-loan-applications.index') }}">
-                        All Loan Applications
+                            All Loan Applications
                         </x-dropdown-link>
-                        @endcan
-                        @can('view-any', App\Models\Bank::class)
+                    @endcan
+                    @can('view-any', App\Models\Bank::class)
                         <x-dropdown-link href="{{ route('banks.index') }}">
-                        Banks
+                            Banks
                         </x-dropdown-link>
-                        @endcan
-                        @can('view-any', App\Models\LoanType::class)
+                    @endcan
+                    @can('view-any', App\Models\LoanType::class)
                         <x-dropdown-link href="{{ route('loan-types.index') }}">
-                        Loan Types
+                            Loan Types
                         </x-dropdown-link>
-                        @endcan
-                        @can('view-any', App\Models\User::class)
+                    @endcan
+                    @can('view-any', App\Models\User::class)
                         <x-dropdown-link href="{{ route('users.index') }}">
-                        Users
+                            Users
                         </x-dropdown-link>
-                        @endcan
+                    @endcan
                 </x-nav-dropdown>
 
-                    @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) || 
-                        Auth::user()->can('view-any', Spatie\Permission\Models\Permission::class))
+                @if (Auth::user()->can('view-any', Spatie\Permission\Models\Role::class) || 
+                    Auth::user()->can('view-any', Spatie\Permission\Models\Permission::class))
                     <x-nav-dropdown title="Access Management" align="right" width="48">
-                        
                         @can('view-any', Spatie\Permission\Models\Role::class)
-                        <x-dropdown-link href="{{ route('roles.index') }}">Roles</x-dropdown-link>
+                            <x-dropdown-link href="{{ route('roles.index') }}">Roles</x-dropdown-link>
                         @endcan
-                    
                         @can('view-any', Spatie\Permission\Models\Permission::class)
-                        <x-dropdown-link href="{{ route('permissions.index') }}">Permissions</x-dropdown-link>
+                            <x-dropdown-link href="{{ route('permissions.index') }}">Permissions</x-dropdown-link>
                         @endcan
-                        
                     </x-nav-dropdown>
-                    @endif
+                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <!-- Documentation Link -->
+                <a href="{{ route('documentation') }}"
+                   class="text-gray-500 hover:text-gray-700 font-medium mr-4">
+                    Documentation
+                </a>
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
@@ -65,39 +68,32 @@
                                 <span class="inline-flex rounded-md">
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         {{ Auth::user()->currentTeam->name }}
-
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
                                     </button>
                                 </span>
                             </x-slot>
-
                             <x-slot name="content">
                                 <div class="w-60">
                                     <!-- Team Management -->
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Manage Team') }}
                                     </div>
-
                                     <!-- Team Settings -->
                                     <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                         {{ __('Team Settings') }}
                                     </x-dropdown-link>
-
                                     @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                                         <x-dropdown-link href="{{ route('teams.create') }}">
                                             {{ __('Create New Team') }}
                                         </x-dropdown-link>
                                     @endcan
-
                                     <div class="border-t border-gray-100"></div>
-
                                     <!-- Team Switcher -->
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Switch Teams') }}
                                     </div>
-
                                     @foreach (Auth::user()->allTeams() as $team)
                                         <x-switchable-team :team="$team" />
                                     @endforeach
@@ -119,7 +115,6 @@
                                 <span class="inline-flex rounded-md">
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
-
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
@@ -127,29 +122,23 @@
                                 </span>
                             @endif
                         </x-slot>
-
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
                             </div>
-
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
                             @endif
-
                             <div class="border-t border-gray-100"></div>
-
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-
                                 <x-dropdown-link href="{{ route('logout') }}"
                                          onclick="event.preventDefault();
                                                 this.closest('form').submit();">
