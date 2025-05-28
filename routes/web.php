@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [DashboardCon
 
 Route::get('/documentation', function () {
     return view('documentation');
-})->middleware(['auth'])->name('documentation');
+})->name('documentation');
 
 Route::prefix('/')
     ->middleware(['auth:sanctum', 'verified'])
