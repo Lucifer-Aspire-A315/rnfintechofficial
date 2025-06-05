@@ -29,19 +29,30 @@ class PermissionsSeeder extends Seeder
         }
 
         // Create agent role and assign existing permissions
-        $currentPermissions = Permission::all();
+        $agentPermissions = Permission::whereIn('name', [
+            'list banks',
+            'view banks',
+            'list loantypes',
+            'view loantypes',
+            'list allloanapplications',
+            'view allloanapplications',
+            'create allloanapplications',
+            'update allloanapplications'
+        ])->get();
         $userRole = Role::firstOrCreate(['name' => 'agent', 'guard_name' => 'web']);
-        $userRole->syncPermissions($currentPermissions);
+        $userRole->syncPermissions($agentPermissions);
 
         // Create admin role and assign all permissions
         $adminRole = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
-        $adminRole->syncPermissions($currentPermissions);
+        $adminRole->syncPermissions(Permission::all());
 
         // Create customer role and assign specific permissions
         $customerRole = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
         $customerPermissions = Permission::whereIn('name', [
             'view banks',
             'list banks',
+            'view loantypes',
+            'list loantypes',
             'view allloanapplications',
             'list allloanapplications',
             // add any other permissions you want customers to have

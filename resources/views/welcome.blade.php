@@ -156,27 +156,68 @@
         </div>
     </section>
 
-    <!-- Our Partners Section (Single Card) -->
-    <section class="py-12 md:py-16">
-        <div class="container mx-auto px-4 md:px-6">
-            <h2 class="text-3xl font-bold text-center text-indigo-700 mb-10">Our Partners from the Industry</h2>
-            <div class="bg-white border-t-4 border-emerald-400 rounded-2xl shadow-xl p-8 max-w-5xl mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-emerald-500 hover:bg-emerald-50/40">
-                <div class="flex flex-wrap justify-center gap-8">
-                    @foreach($banks as $bank)
-                        <div class="flex flex-col items-center w-32 mb-6 group transition-all duration-300">
-                            <div class="bg-white rounded-xl shadow border border-emerald-100 p-2 flex items-center justify-center mb-2 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105" style="height:64px;">
-                                <img src="{{ $bank->image ? \Storage::url($bank->image) : '/default-bank.png' }}"
-                                     alt="{{ $bank->name }}"
-                                     class="h-12 w-auto object-contain mx-auto"
-                                     style="max-width: 96px;">
-                            </div>
-                            <span class="mt-2 text-sm text-center text-indigo-900 font-semibold">{{ $bank->name }}</span>
+    <!-- Our Partners Section (Slider) -->
+@php
+    $partners = $banks->map(function($b) {
+        return [
+            'name' => $b->name,
+            'image' => $b->image ? \Storage::url($b->image) : asset('default-bank.jpg'),
+        ];
+    })->values();
+    $chunks = $partners->chunk(20);
+@endphp
+
+<section class="py-12 md:py-16">
+    <div class="container mx-auto px-4 md:px-6">
+        <h2 class="text-3xl font-bold text-center text-indigo-700 mb-10">Our Partners from the Industry</h2>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach($chunks as $chunk)
+                    <div class="swiper-slide">
+                        <div class="flex flex-wrap justify-center gap-8">
+                            @foreach($chunk as $partner)
+                                <div class="flex flex-col items-center w-32 mb-6">
+                                    <div class="bg-white rounded-xl shadow border border-emerald-100 p-2 flex items-center justify-center mb-2" style="height:64px;">
+                                        <img src="{{ $partner['image'] }}"
+                                             alt="{{ $partner['name'] }}"
+                                             class="h-12 w-auto object-contain mx-auto"
+                                             style="max-width: 96px;">
+                                    </div>
+                                    <span class="mt-2 text-sm text-center text-indigo-900 font-semibold">{{ $partner['name'] }}</span>
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             </div>
+            
+<div class="flex justify-center mt-4">
+    <div class="swiper-pagination"></div>
+</div>
         </div>
-    </section>
+    </div>
+</section>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Swiper('.mySwiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            // Remove navigation config
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 2000,
+                disableOnInteraction: false,
+            },
+            loop: true
+        });
+    });
+</script>
+@endpush
 
     <!-- FAQ & Loan Education Section -->
     <section id="education" class="py-12 md:py-16">

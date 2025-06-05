@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('loan_applications', function (Blueprint $table) {
-            $table->string('bank_statement')->nullable();
-            $table->string('salary_slip')->nullable();
-            $table->string('electricity_bill')->nullable();
+            if (!Schema::hasColumn('loan_applications', 'bank_statement')) {
+                $table->string('bank_statement')->nullable();
+            }
+            if (!Schema::hasColumn('loan_applications', 'salary_slip')) {
+                $table->string('salary_slip')->nullable();
+            }
+            if (!Schema::hasColumn('loan_applications', 'electricity_bill')) {
+                $table->string('electricity_bill')->nullable();
+            }
         });
     }
 
